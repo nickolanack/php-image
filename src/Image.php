@@ -28,6 +28,13 @@ class Image {
 			$this->resource = imagecreatefromgif($path);
 			break;
 		case 'bmp':
+
+			if(function_exists('imagecreatefrombmp')){
+				//(Exists in php 7.2+)
+				$this->resource = imagecreatefrombmp($path);
+				break;
+			}
+
 			$this->resource = $this->createFromBmp($path);
 			break;
 
@@ -348,6 +355,11 @@ class Image {
 		imagecopy($img2, $img1, $xOffset, $yOffset, 0, 0, imagesx($img2), imagesy($img2));
 		
 		return $this;
+	}
+
+
+	public function getResource(){
+		return $this->resource;
 	}
 
 	/**
