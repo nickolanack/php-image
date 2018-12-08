@@ -1,0 +1,9 @@
+{
+    "name": "nblackwe/php-image",
+    "description": "Minimal image tool",
+    "license": "MIT",
+    "require": {},
+    "autoload": {
+        "psr-4": { "nblackwe\\": "src/" }
+    }
+}
