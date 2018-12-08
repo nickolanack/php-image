@@ -237,6 +237,11 @@ class Image {
 	}
 
 
+	public function detectBoundary(){
+		return array();
+	}
+
+
 	public static function filterGrayScale() {
 		$image=$this->resource;
 		imagefilter($image, IMG_FILTER_GRAYSCALE);
@@ -257,8 +262,7 @@ class Image {
 	/**
 	 * scales an image, given a image resource $image so that it fits entirely within $x, $y (width, height) and
 	 * maintains aspect ratio
-	 *
-	 * @param resource $image
+
 	 * @param int $x
 	 *            width
 	 * @param int $y
@@ -267,7 +271,7 @@ class Image {
 	 *            ignore this arg
 	 * @return resource a new image resource. call Image::Close($oldResource) if done with the previous
 	 */
-	public function thumbnailFit($image, $x, $y = false, $scale = true) {
+	private function thumbnailFitRes($x, $y = false, $scale = true) {
 
 		$image=$this->resource;
 
@@ -301,9 +305,23 @@ class Image {
 		imagesavealpha($out, true);
 		imagealphablending($out, false);
 		imagecopyresampled($out, $image, 0, 0, 0, 0, $outW, $outY, $width, $height);
+
+		$this->close();
 		$this->resource= $out;
 
 		return $this;
+	}
+
+	public function thumbnailFit($x, $y = false, $scale = true) {
+
+		$out=$this->thumbnailFitRes($x, $y, $scale);
+		$this->close();
+		$this->resource= $out;
+		return $this;
+	}
+
+	public function thumbnailFitCopy($x, $y = false, $scale = true) {
+		return (new \nblackwe\Image())->fromResource($this->thumbnailFitRes($x, $y, $scale));
 	}
 
 	public function close() {
@@ -428,7 +446,10 @@ class Image {
 		imagealphablending($tinted, true);
 		imagesavealpha($tinted, true);
 
-		return $tinted;
+		$this->close();
+		$this->resource=$tinted;
+
+		return $this;
 	}
 
 	/**
@@ -488,6 +509,9 @@ class Image {
 		// imagealphablending($tinted, true);
 		imagesavealpha($tinted, true);
 
-		return $tinted;
+		$this->close();
+		$this->resource=$tinted;
+
+		return $this;
 	}
 }
