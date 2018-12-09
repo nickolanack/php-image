@@ -402,11 +402,14 @@ class Image {
 			switch ($ext) {
 			case 'jpeg':
 			case 'jpg':
-				return imagejpeg($image, $path);
+				imagejpeg($image, $path);
+				break;
 			case 'png':
-				return imagepng($image, $path);
+				imagepng($image, $path);
+				break;
 			case 'gif':
-				return imagegif($image, $path);
+				imagegif($image, $path);
+				break;
 			}
 		}
 		return $this;
