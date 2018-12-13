@@ -311,10 +311,7 @@ class Image {
 		imagealphablending($out, false);
 		imagecopyresampled($out, $image, 0, 0, 0, 0, $outW, $outY, $width, $height);
 
-		$this->close();
-		$this->resource= $out;
-
-		return $this;
+		return $out;
 	}
 
 	public function thumbnailFit($x, $y = false, $scale = true) {
