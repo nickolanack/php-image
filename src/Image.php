@@ -48,6 +48,11 @@ class Image {
 	}
 
 	public function fromResource($resource) {
+
+		if(!is_resource($resource)){
+			throw new \Exception('Expected resource');
+		}
+
 		$this->resource=$resource;
 		return $this;
 	}
