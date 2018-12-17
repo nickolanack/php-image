@@ -13,7 +13,7 @@ class Image {
 		$ext = strtolower($p_po);
 
 		if (!file_exists($path)) {
-			throw new Exception("Image: File not found: " . $path);
+			throw new \Exception("Image: File not found: " . $path);
 		}
 
 		switch ($ext) {
@@ -40,7 +40,7 @@ class Image {
 
 		default:
 
-			throw new Exception('Image: Invalid Image Type, not one of [jpeg, jpg, png, gif, bmp]: ' . $path);
+			throw new \Exception('Image: Invalid Image Type, not one of [jpeg, jpg, png, gif, bmp]: ' . $path);
 		}
 
 		return $this;
@@ -261,7 +261,7 @@ class Image {
 	 * TODO: similar to ThumbnailFit, but will crop to size maintaining aspect ratio
 	 */
 	public  function ThumbnailFill($x, $y = false, $scale = true) {
-		throw new Exception('Image: Not implemented: (ThumbnailFill)');
+		throw new \Exception('Image: Not implemented: (ThumbnailFill)');
 	}
 
 	/**
