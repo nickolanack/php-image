@@ -395,26 +395,28 @@ class Image {
 		$image=$this->resource;
 		$ext_ex = explode('.', $path);
 		$ext = strtolower(array_pop($ext_ex));
-		if (in_array($ext, array(
+		$exts=array(
 			'jpg',
 			'jpeg',
 			'png',
 			'gif',
-		))) {
+		);
+
+		if (in_array($ext, $exts)) {
 			switch ($ext) {
 			case 'jpeg':
 			case 'jpg':
 				imagejpeg($image, $path);
-				break;
+				return $this;
 			case 'png':
 				imagepng($image, $path);
-				break;
+				return $this;
 			case 'gif':
 				imagegif($image, $path);
-				break;
+				return $this;
 			}
 		}
-		return $this;
+		throw new \Exception('Requires a file extension in: ['.implode(', ', $exts).']');
 	}
 
 	/**
