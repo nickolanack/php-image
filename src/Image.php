@@ -16,6 +16,11 @@ class Image {
 			throw new \Exception("Image: File not found: " . $path);
 		}
 
+
+		if(!function_exists('gd_info')){
+			throw new \Exception('Requires gd extension for php!');
+		}
+
 		switch ($ext) {
 		case 'jpeg':
 		case 'jpg':
