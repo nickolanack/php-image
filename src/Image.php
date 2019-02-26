@@ -93,10 +93,10 @@ class Image {
 		$yPixel = 1;
 		$image = imagecreatetruecolor($width, $height);
 		foreach ($body as $rgb) {
-			$r = hexdec(substr($rgb, 4, 2));
-			$g = hexdec(substr($rgb, 2, 2));
-			$b = hexdec(substr($rgb, 0, 2));
-			$color = imagecolorallocate($image, $r, $g, $b);
+			$red = hexdec(substr($rgb, 4, 2));
+			$green = hexdec(substr($rgb, 2, 2));
+			$blue = hexdec(substr($rgb, 0, 2));
+			$color = imagecolorallocate($image, $red, $green, $blue);
 			imagesetpixel($image, $xPixel, $height - $yPixel, $color);
 			$xPixel++;
 			if ($xPixel >= $width) {
@@ -161,19 +161,19 @@ class Image {
 		for ($x = 0; $x < $s['w']; $x++) {
 			for ($y = 0; $y < $s['h']; $y++) {
 				$rgb = imagecolorat($simplified, $x, $y);
-				$r = ($rgb >> 16) & 0xFF;
-				$g = ($rgb >> 8) & 0xFF;
-				$b = $rgb & 0xFF;
+				$red = ($rgb >> 16) & 0xFF;
+				$green = ($rgb >> 8) & 0xFF;
+				$blue = $rgb & 0xFF;
 
-				if (abs($r - $rgb[0]) > $threshhold) {
+				if (abs($red - $rgb[0]) > $threshhold) {
 					return false;
 				}
 
-				if (abs($g - $rgb[1]) > $threshhold) {
+				if (abs($green - $rgb[1]) > $threshhold) {
 					return false;
 				}
 
-				if (abs($b - $rgb[2]) > $threshhold) {
+				if (abs($blue - $rgb[2]) > $threshhold) {
 					return false;
 				}
 
@@ -192,26 +192,26 @@ class Image {
 			for ($y = 0; $y < $s['h']; $y++) {
 
 				$rgb = imagecolorat($simplified, $x, $y);
-				$r = ($rgb >> 16) & 0xFF;
-				$g = ($rgb >> 8) & 0xFF;
-				$b = $rgb & 0xFF;
+				$red = ($rgb >> 16) & 0xFF;
+				$green = ($rgb >> 8) & 0xFF;
+				$blue = $rgb & 0xFF;
 				if (!$rgb) {
 					$rgb = array(
-						$r,
-						$g,
+						$red,
+						$green,
 						$b,
 					);
 				}
 
-				if (abs($r - $rgb[0]) > $threshhold) {
+				if (abs($red - $rgb[0]) > $threshhold) {
 					return false;
 				}
 
-				if (abs($g - $rgb[1]) > $threshhold) {
+				if (abs($green - $rgb[1]) > $threshhold) {
 					return false;
 				}
 
-				if (abs($b - $rgb[2]) > $threshhold) {
+				if (abs($blue - $rgb[2]) > $threshhold) {
 					return false;
 				}
 
@@ -230,10 +230,10 @@ class Image {
 		for ($x = 0; $x < $s['w']; $x++) {
 			for ($y = 0; $y < $s['h']; $y++) {
 				$rgb = imagecolorat($simplified, $x, $y);
-				$r = ($rgb >> 16) & 0xFF;
-				$g = ($rgb >> 8) & 0xFF;
-				$b = $rgb & 0xFF;
-				$values[] = 'rgb(' . $r . ', ' . $g . ', ' . $b . ')';
+				$red = ($rgb >> 16) & 0xFF;
+				$green = ($rgb >> 8) & 0xFF;
+				$blue = $rgb & 0xFF;
+				$values[] = 'rgb(' . $red . ', ' . $green . ', ' . $blue . ')';
 			}
 		}
 
