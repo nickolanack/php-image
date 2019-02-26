@@ -89,19 +89,19 @@ class Image {
 			$height = hexdec(substr($header, 0, 2));
 			unset($header);
 		}
-		$x = 0;
-		$y = 1;
+		$xPixel = 0;
+		$yPixel = 1;
 		$image = imagecreatetruecolor($width, $height);
 		foreach ($body as $rgb) {
 			$r = hexdec(substr($rgb, 4, 2));
 			$g = hexdec(substr($rgb, 2, 2));
 			$b = hexdec(substr($rgb, 0, 2));
 			$color = imagecolorallocate($image, $r, $g, $b);
-			imagesetpixel($image, $x, $height - $y, $color);
-			$x++;
-			if ($x >= $width) {
-				$x = 0;
-				$y++;
+			imagesetpixel($image, $xPixel, $height - $yPixel, $color);
+			$xPixel++;
+			if ($xPixel >= $width) {
+				$xPixel = 0;
+				$yPixel++;
 			}
 		}
 		return $image;
@@ -118,9 +118,9 @@ class Image {
 		);
 		$memStr = ini_get('memory_limit');
 		$memInt = intval($memStr);
-		$m = str_replace($memInt . "", "", $memStr);
+		$memChar = str_replace($memInt . "", "", $memStr);
 		//error_log($m);
-		$haveBytes = $memInt * $mult[$m];
+		$haveBytes = $memInt * $mult[$memChar];
 
 		$needBytes = (strlen($str) * 40) + memory_get_usage();
 
@@ -151,11 +151,10 @@ class Image {
 	 */
 	public  function isAllColor($rgb, $threshhold = 0) {
 
-		$image=$this->resource;
-
-		$simplified = Image::ThumbnailFit($image, 10);
+	
+		$simplified = $this->thumbnailFitRes(10);
 		// imagetruecolortopalette($simplified, false, 5);
-		$s = Image::GetSize($simplified);
+		$s = $this->getSizeRes($simplified);
 
 		$rgb = $this->parseRgb($rgb);
 
@@ -185,10 +184,10 @@ class Image {
 
 	public function isAllOneColor( $threshhold = 0) {
 
-		$image=$this->resource;
-		$simplified = Image::ThumbnailFit($image, 10);
+
+		$simplified =  $this->thumbnailFitRes(10);
 		// imagetruecolortopalette($simplified, false, 5);
-		$s = Image::GetSize($simplified);
+		$s = $this->getSizeRes($simplified);
 		for ($x = 0; $x < $s['w']; $x++) {
 			for ($y = 0; $y < $s['h']; $y++) {
 
@@ -221,12 +220,12 @@ class Image {
 		return true;
 	}
 
-	public function colorProfile($image) {
+	public function colorProfile() {
 
-		$image=$this->resource;
-		$simplified = Image::ThumbnailFit($image, 10);
+		
+		$simplified = $this->thumbnailFitRes(10);
 		// imagetruecolortopalette($simplified, false, 5);
-		$s = Image::GetSize($simplified);
+		$s = $this->getSizeRes($simplified);
 		$values = array();
 		for ($x = 0; $x < $s['w']; $x++) {
 			for ($y = 0; $y < $s['h']; $y++) {
@@ -344,14 +343,20 @@ class Image {
 	 * @return array with (w,h) keys
 	 */
 	public function getSize() {
-		$image=$this->resource;
-		$x = imagesx($image);
-		$y = imagesy($image);
+		return $this->getSizeRes($this->resource);
+	}
+
+	protected function getSizeRes($imageResource){
+
+		$x = imagesx($imageResource);
+		$y = imagesy($imageResource);
 
 		return array(
 			'w' => $x,
 			'h' => $y,
 		);
+
+
 	}
 
 	/**
