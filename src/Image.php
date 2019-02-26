@@ -154,12 +154,12 @@ class Image {
 	
 		$simplified = $this->thumbnailFitRes(10);
 		// imagetruecolortopalette($simplified, false, 5);
-		$s = $this->getSizeRes($simplified);
+		$size = $this->getSizeRes($simplified);
 
 		$rgb = $this->parseRgb($rgb);
 
-		for ($x = 0; $x < $s['w']; $x++) {
-			for ($y = 0; $y < $s['h']; $y++) {
+		for ($x = 0; $x < $size['w']; $x++) {
+			for ($y = 0; $y < $size['h']; $y++) {
 				$rgb = imagecolorat($simplified, $x, $y);
 				$red = ($rgb >> 16) & 0xFF;
 				$green = ($rgb >> 8) & 0xFF;
@@ -187,9 +187,9 @@ class Image {
 
 		$simplified =  $this->thumbnailFitRes(10);
 		// imagetruecolortopalette($simplified, false, 5);
-		$s = $this->getSizeRes($simplified);
-		for ($x = 0; $x < $s['w']; $x++) {
-			for ($y = 0; $y < $s['h']; $y++) {
+		$size = $this->getSizeRes($simplified);
+		for ($x = 0; $x < $size['w']; $x++) {
+			for ($y = 0; $y < $size['h']; $y++) {
 
 				$rgb = imagecolorat($simplified, $x, $y);
 				$red = ($rgb >> 16) & 0xFF;
@@ -225,10 +225,10 @@ class Image {
 		
 		$simplified = $this->thumbnailFitRes(10);
 		// imagetruecolortopalette($simplified, false, 5);
-		$s = $this->getSizeRes($simplified);
+		$size = $this->getSizeRes($simplified);
 		$values = array();
-		for ($x = 0; $x < $s['w']; $x++) {
-			for ($y = 0; $y < $s['h']; $y++) {
+		for ($x = 0; $x < $size['w']; $x++) {
+			for ($y = 0; $y < $size['h']; $y++) {
 				$rgb = imagecolorat($simplified, $x, $y);
 				$red = ($rgb >> 16) & 0xFF;
 				$green = ($rgb >> 8) & 0xFF;
@@ -441,15 +441,15 @@ class Image {
 	public function tint($rgb) {
 
 		$image=$this->resource;
-		$s = $this->getSize();
+		$size = $this->getSize();
 
-		$tinted = imagecreatetruecolor($s['w'], $s['h']);
+		$tinted = imagecreatetruecolor($size['w'], $size['h']);
 		$color = imagecolorallocatealpha($tinted, $rgb[0], $rgb[1], $rgb[2], 127);
 
 		imagefill($tinted, 0, 0, $color);
 
-		for ($x = 0; $x < $s['w']; $x++) {
-			for ($y = 0; $y < $s['h']; $y++) {
+		for ($x = 0; $x < $size['w']; $x++) {
+			for ($y = 0; $y < $size['h']; $y++) {
 
 				$a = imagecolorsforindex($image, imagecolorat($image, $x, $y));
 				$t = imagecolorsforindex($tinted, imagecolorat($tinted, $x, $y));
@@ -480,9 +480,9 @@ class Image {
 	 */
 	public static function tintFade($rgb) {
 		$image=$this->resource;
-		$s = $this->getSize();
+		$size = $this->getSize();
 
-		$tinted = imagecreatetruecolor($s['w'], $s['h']);
+		$tinted = imagecreatetruecolor($size['w'], $size['h']);
 
 		$span = 0.3;
 		$end = 1.15;
@@ -495,24 +495,24 @@ class Image {
 		}
 
 		$start = $end - $span;
-		$step = $span / $s['h'];
+		$step = $span / $size['h'];
 		// header('Content-Type: text/html;');
 		imagealphablending($tinted, false);
-		for ($y = 0; $y < $s['h']; $y++) {
+		for ($y = 0; $y < $size['h']; $y++) {
 
 			$color = imagecolorallocatealpha($tinted, (int) $rgb[0] * ($start + ($step * $y)),
 				(int) $rgb[1] * ($start + ($step * $y)), (int) $rgb[2] * ($start + ($step * $y)), 127);
-			if (!imageline($tinted, 0, $y, $s['w'], $y, $color)) {
+			if (!imageline($tinted, 0, $y, $size['w'], $y, $color)) {
 				// echo 'failed';
 			}
 
-			// print_r('(0, '.$y.', '.$s['w'].', '.($y+1).') '.$rgb[0]*($start+($step*$y)).' - '.$rgb[1]*($start+($step*$y)).' - '.$rgb[2]*($start+($step*$y))."<br/>");
+			// print_r('(0, '.$y.', '.$size['w'].', '.($y+1).') '.$rgb[0]*($start+($step*$y)).' - '.$rgb[1]*($start+($step*$y)).' - '.$rgb[2]*($start+($step*$y))."<br/>");
 		}
 		;
 
 		// die();
-		for ($x = 0; $x < $s['w']; $x++) {
-			for ($y = 0; $y < $s['h']; $y++) {
+		for ($x = 0; $x < $size['w']; $x++) {
+			for ($y = 0; $y < $size['h']; $y++) {
 
 				$a = imagecolorsforindex($image, imagecolorat($image, $x, $y));
 				$t = imagecolorsforindex($tinted, imagecolorat($tinted, $x, $y));
