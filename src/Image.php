@@ -25,6 +25,7 @@ class Image {
 		case 'jpeg':
 		case 'jpg':
 			$this->resource = imagecreatefromjpeg($path);
+			$this->checkExif($path);
 			break;
 		case 'png':
 			$this->resource = imagecreatefrompng($path);
@@ -49,6 +50,64 @@ class Image {
 		}
 
 		return $this;
+
+	}
+
+
+	protected function checkExif($path){
+
+		if(!function_exists('exif_read_data')){
+			//warning
+			return;
+		}
+
+
+		$exif=exif_read_data($path);
+		//print_r($exif);
+
+		if(key_exists('Orientation', $exif)){
+			$orientation=intval($exif['Orientation']);
+			//throw new \Exception("requires transform: ".$orientation);
+			if(in_array($orientation, array(8,3,6))){
+				
+				if($orientation===3){
+
+					$out=$this->rotateRightRes(2);
+					$this->close();
+					$this->resource= $out;
+				}
+
+				if($orientation===6){
+
+					$out=$this->rotateRightRes(1);
+					$this->close();
+					$this->resource= $out;
+				}
+
+				if($orientation===8){
+
+					$out=$this->rotateRightRes(3);
+					$this->close();
+					$this->resource= $out;
+				}
+
+
+				return;
+			}
+
+			if($orientation!==1){
+				throw new \Exception("Unknown exif orientation: ".$orientation);
+			}
+			
+
+		}
+
+		//throw new \Exception("Expected exif Orientation");
+
+			
+
+
+			
 
 	}
 
@@ -107,6 +166,9 @@ class Image {
 		return $image;
 
 	}
+
+
+
 
 	public function fromString($str) {
 
@@ -316,6 +378,16 @@ class Image {
 		imagecopyresampled($out, $image, 0, 0, 0, 0, $outW, $outY, $width, $height);
 
 		return $out;
+	}
+
+
+	private function rotateRightRes($num=1){
+
+
+	    $image=$this->resource;
+		$out = imagerotate($image, 90*$num, imagecolortransparent($image, imagecolorallocate($image, 0, 0, 0)));
+		return $out;
+
 	}
 
 	public function thumbnailFit($x, $y = false, $scale = true) {
