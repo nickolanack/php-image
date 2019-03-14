@@ -326,8 +326,8 @@ class Image {
 	/**
 	 * TODO: similar to ThumbnailFit, but will crop to size maintaining aspect ratio
 	 */
-	public  function ThumbnailFill($x, $y = false) {
-		$out=$this->thumbnailFillRes($x, $y);
+	public  function ThumbnailFill($clampWidth, $clampHeight = null) {
+		$out=$this->thumbnailFillRes($clampWidth, $clampHeight);
 		$this->close();
 		$this->resource= $out;
 		return $this;
@@ -438,16 +438,16 @@ class Image {
 
 	}
 
-	public function thumbnailFit($x, $y = false) {
+	public function thumbnailFit($clampWidth, $clampHeight = null) {
 
-		$out=$this->thumbnailFitRes($x, $y);
+		$out=$this->thumbnailFitRes($clampWidth, $clampHeight);
 		$this->close();
 		$this->resource= $out;
 		return $this;
 	}
 
-	public function thumbnailFitCopy($x, $y = false) {
-		return (new \nblackwe\Image())->fromResource($this->thumbnailFitRes($x, $y));
+	public function thumbnailFitCopy($clampWidth, $clampHeight = null) {
+		return (new \nblackwe\Image())->fromResource($this->thumbnailFitRes($clampWidth, $clampHeight));
 	}
 
 	public function close() {
@@ -468,12 +468,12 @@ class Image {
 
 	protected function getSizeRes($imageResource){
 
-		$x = imagesx($imageResource);
-		$y = imagesy($imageResource);
+		$width = imagesx($imageResource);
+		$height = imagesy($imageResource);
 
 		return array(
-			'w' => $x,
-			'h' => $y,
+			'w' => $width,
+			'h' => $height,
 		);
 
 
