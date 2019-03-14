@@ -261,7 +261,7 @@ class Image {
 					$rgb = array(
 						$red,
 						$green,
-						$b,
+						$blue,
 					);
 				}
 
