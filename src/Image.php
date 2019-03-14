@@ -496,6 +496,15 @@ class Image {
 			case 'gif':
 				imagegif($image, $path);
 				return $this;
+			
+			case 'bmp':
+
+				if(function_exists('imagebmp')){
+					imagebmp($image, $path);
+					return $this;
+				}
+
+				
 			}
 		}
 		throw new \Exception('Requires a file extension in: ['.implode(', ', $exts).']');
