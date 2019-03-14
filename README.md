@@ -9,7 +9,8 @@ Simple image utilities for php
 
 	// thumbnail and convert to jpg
 	//
-	// thumbnailFit ensures that the scaled image fits inside a rectangle (in this case a square 128x128)
+	// thumbnailFit ensures that the scaled image fits 
+	// inside a rectangle (in this case a square 128x128)
 
 	(new \nblackwe\Image())
 		->fromFile('/some/image.png')
@@ -20,7 +21,9 @@ Simple image utilities for php
 
 	// thumbnail and convert to jpg
 	//
-	// thumbnailFill ensures that the scaled image is just big enough to contain a rectangle (in this case a square 128x128)
+	// thumbnailFill ensures that the scaled image is just 
+	// big enough to contain a rectangle (in this case a 
+	// square 128x128)
 
 	(new \nblackwe\Image())
 		->fromFile('/some/image.png')
