@@ -13,7 +13,7 @@ Simple image utilities for php
 		->fromFile('/some/image.png')
 		->thumbnailFit(128)
 		->toFile('/thumbnails/some_image_thumb.jpg')
-		->close();
+		->close();	//release resources 
 
 
 ```
