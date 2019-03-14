@@ -530,6 +530,7 @@ class Image {
 			'jpeg',
 			'png',
 			'gif',
+			'bmp'
 		);
 
 		if (in_array($ext, $exts)) {

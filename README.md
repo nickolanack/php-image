@@ -1,5 +1,6 @@
 # php-image
 Simple image utilities for php
+Supports input and output images types (jpg, jpeg, png, gif, bmp)
 
 ##Examples
 
