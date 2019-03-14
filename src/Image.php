@@ -326,8 +326,60 @@ class Image {
 	/**
 	 * TODO: similar to ThumbnailFit, but will crop to size maintaining aspect ratio
 	 */
-	public  function ThumbnailFill($x, $y = false, $scale = true) {
-		throw new \Exception('Image: Not implemented: (ThumbnailFill)');
+	public  function ThumbnailFill($x, $y = false) {
+		$out=$this->thumbnailFillRes($x, $y);
+		$this->close();
+		$this->resource= $out;
+		return $this;
+	
+	}
+
+	/**
+	 * scales the image resource as small as possible, but still contains the rectangle defined by $x, $y (width, height) and
+	 * maintains aspect ratio
+	 * @return resource a new image resource. call Image::Close($oldResource) if done with the previous
+	 */
+	private function thumbnailFillRes($clampWidth, $clampHeight = null) {
+
+		$image=$this->resource;
+
+		if (!$clampHeight) {
+			$clampHeight = $clampWidth;
+		}
+
+		$actualWidth = imagesx($image);
+		$actualHieght = imagesy($image);
+
+		$scaledWidth = $actualWidth;
+		$scaledHeight = $actualHieght;
+
+		
+
+		if ($clampWidth < $scaledWidth) {
+			$scaledHeight = $actualHieght * ($clampWidth / $actualWidth);
+			$scaledWidth = $clampWidth;
+		}
+		if ($clampHeight < $scaledHeight) {
+			$scaledWidth = $actualWidth * ($clampHeight / $actualHieght);
+			$scaledHeight = $clampHeight;
+		}
+		if ($clampWidth > $scaledWidth) {
+			$scaledHeight = $actualHieght * ($clampWidth / $actualWidth);
+			$scaledWidth = $clampWidth;
+		}
+		if ($clampHeight > $scaledHeight) {
+			$scaledWidth = $actualWidth * ($clampHeight / $actualHieght);
+			$scaledHeight = $clampHeight;
+		}
+		
+
+		$out = imagecreatetruecolor($scaledWidth, $scaledHeight);
+		imagefill($out, 0, 0, imagecolortransparent($out, imagecolorallocate($out, 0, 0, 0)));
+		imagesavealpha($out, true);
+		imagealphablending($out, false);
+		imagecopyresampled($out, $image, 0, 0, 0, 0, $scaledWidth, $scaledHeight, $actualWidth, $actualHieght);
+
+		return $out;
 	}
 
 	/**
@@ -342,40 +394,36 @@ class Image {
 	 *            ignore this arg
 	 * @return resource a new image resource. call Image::Close($oldResource) if done with the previous
 	 */
-	private function thumbnailFitRes($x, $y = false, $scale = true) {
+	private function thumbnailFitRes($clampWidth, $clampHeight = null) {
 
 		$image=$this->resource;
 
-		if (!$y) {
-			$y = $x;
+		if (!$clampHeight) {
+			$clampHeight = $clampWidth;
 		}
 
 		$width = imagesx($image);
 		$height = imagesy($image);
 
-		$outW = $width;
-		$outY = $height;
+		$scaledWidth = $width;
+		$scaledHeight = $height;
 
-		if ($scale) {
-
-			if ($x < $outW) {
-				$outY = $height * ($x / $width);
-				$outW = $x;
-			}
-			if ($y < $outY) {
-				$outW = $width * ($y / $height);
-				$outY = $y;
-			}
-		} else {
-			$outW = $x;
-			$outY = $y;
+		
+		if ($clampWidth < $scaledWidth) {
+			$scaledHeight = $height * ($clampWidth / $width);
+			$scaledWidth = $clampWidth;
 		}
+		if ($clampHeight < $scaledHeight) {
+			$scaledWidth = $width * ($clampHeight / $height);
+			$scaledHeight = $clampHeight;
+		}
+		
 
-		$out = imagecreatetruecolor($outW, $outY);
+		$out = imagecreatetruecolor($scaledWidth, $scaledHeight);
 		imagefill($out, 0, 0, imagecolortransparent($out, imagecolorallocate($out, 0, 0, 0)));
 		imagesavealpha($out, true);
 		imagealphablending($out, false);
-		imagecopyresampled($out, $image, 0, 0, 0, 0, $outW, $outY, $width, $height);
+		imagecopyresampled($out, $image, 0, 0, 0, 0, $scaledWidth, $scaledHeight, $width, $height);
 
 		return $out;
 	}
@@ -390,16 +438,16 @@ class Image {
 
 	}
 
-	public function thumbnailFit($x, $y = false, $scale = true) {
+	public function thumbnailFit($x, $y = false) {
 
-		$out=$this->thumbnailFitRes($x, $y, $scale);
+		$out=$this->thumbnailFitRes($x, $y);
 		$this->close();
 		$this->resource= $out;
 		return $this;
 	}
 
-	public function thumbnailFitCopy($x, $y = false, $scale = true) {
-		return (new \nblackwe\Image())->fromResource($this->thumbnailFitRes($x, $y, $scale));
+	public function thumbnailFitCopy($x, $y = false) {
+		return (new \nblackwe\Image())->fromResource($this->thumbnailFitRes($x, $y));
 	}
 
 	public function close() {

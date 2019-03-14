@@ -37,7 +37,7 @@ class ImageTest extends PHPUnit_Framework_TestCase {
     /**
      * @runInSeparateProcess
      */
-    public function _testRotatedImages() {
+    public function _testFitFillImages() {
 
 
 
@@ -45,10 +45,19 @@ class ImageTest extends PHPUnit_Framework_TestCase {
 
         include_once dirname(__DIR__).'/vendor/autoload.php';
         
-       
-        (new nblackwe\Image())->fromFile(__DIR__.'/[G]_[ImAgE]_WBq_ptd_45j.bmp')->thumbnailFit(50)->toFile(__DIR__.'/[G]_[ImAgE]_WBq_ptd_45j.thumb.bmp');
+        (new nblackwe\Image())->fromFile(__DIR__.'/jyc_[ImAgE]_ahr_1ho_[G].jpg')->thumbnailFit(50)->toFile(__DIR__.'/jyc_[ImAgE]_ahr_1ho_[G].thumb-fit.jpg');
 
+        $this->assertEquals(array(
+            'w'=>50,
+            'h'=>28
+            ), (new nblackwe\Image())->fromFile(__DIR__.'/jyc_[ImAgE]_ahr_1ho_[G].thumb-fit.jpg')->getSize());
 
+        (new nblackwe\Image())->fromFile(__DIR__.'/jyc_[ImAgE]_ahr_1ho_[G].jpg')->thumbnailFill(50)->toFile(__DIR__.'/jyc_[ImAgE]_ahr_1ho_[G].thumb-fill.jpg');
+
+        $this->assertEquals(array(
+            'w'=>88,
+            'h'=>50
+            ), (new nblackwe\Image())->fromFile(__DIR__.'/jyc_[ImAgE]_ahr_1ho_[G].thumb-fill.jpg')->getSize());
 
 
     }
