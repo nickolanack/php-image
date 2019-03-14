@@ -492,11 +492,11 @@ class Image {
 	 * @param int $xOffset
 	 * @param int $yOffset
 	 */
-	public function overlay($image, $xOffset, $yOffset = false) {
+	public function overlay($image, $xOffset, $yOffset = null) {
 
 		$img1=$image;
 		$img2=$this->resource;
-		if ($yOffset === false) {
+		if (is_null($yOffset) {
 			$yOffset = $xOffset;
 		}
 
@@ -581,11 +581,12 @@ class Image {
 		for ($x = 0; $x < $size['w']; $x++) {
 			for ($y = 0; $y < $size['h']; $y++) {
 
-				$a = imagecolorsforindex($image, imagecolorat($image, $x, $y));
-				$t = imagecolorsforindex($tinted, imagecolorat($tinted, $x, $y));
+				$originalPixelColor = imagecolorsforindex($image, imagecolorat($image, $x, $y));
+				$tintPixelColor = imagecolorsforindex($tinted, imagecolorat($tinted, $x, $y));
 
 				imagesetpixel($tinted, $x, $y,
-					imagecolorallocatealpha($tinted, $t['red'], $t['green'], $t['blue'], $a['alpha']));
+				imagecolorallocatealpha($tinted, $tintPixelColor['red'], $tintPixelColor['green'], $tintPixelColor['blue'], $originalPixelColor['alpha']));
+
 			}
 		}
 
@@ -644,11 +645,11 @@ class Image {
 		for ($x = 0; $x < $size['w']; $x++) {
 			for ($y = 0; $y < $size['h']; $y++) {
 
-				$a = imagecolorsforindex($image, imagecolorat($image, $x, $y));
-				$t = imagecolorsforindex($tinted, imagecolorat($tinted, $x, $y));
+				$originalPixelColor = imagecolorsforindex($image, imagecolorat($image, $x, $y));
+				$tintPixelColor = imagecolorsforindex($tinted, imagecolorat($tinted, $x, $y));
 
 				imagesetpixel($tinted, $x, $y,
-					imagecolorallocatealpha($tinted, $t['red'], $t['green'], $t['blue'], $a['alpha']));
+				imagecolorallocatealpha($tinted, $tintPixelColor['red'], $tintPixelColor['green'], $tintPixelColor['blue'], $originalPixelColor['alpha']));
 			}
 		}
 
