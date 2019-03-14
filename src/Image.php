@@ -496,7 +496,7 @@ class Image {
 
 		$img1=$image;
 		$img2=$this->resource;
-		if (is_null($yOffset) {
+		if (is_null($yOffset)) {
 			$yOffset = $xOffset;
 		}
 
