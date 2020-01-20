@@ -96,7 +96,8 @@ class Image {
 			}
 
 			if($orientation!==1){
-				throw new \Exception("Unknown exif orientation: ".$orientation);
+				//throw new \Exception("Unknown exif orientation: ".$orientation);
+				error_log(get_class($this)."; Unknown exif orientation: ".$orientation)
 			}
 			
 
