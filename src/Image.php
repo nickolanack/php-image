@@ -7,21 +7,25 @@ class Image {
 	private $resource;
 
 	public function fromFile($path) {
-		$p_ex = explode('.', $path);
-		$p_po = array_pop($p_ex);
 
-		$ext = strtolower($p_po);
+		// $p_ex = explode('.', $path);
+		// $p_po = array_pop($p_ex);
+		// $ext = strtolower($p_po);
 
 		if (!file_exists($path)) {
 			throw new \Exception("Image: File not found: " . $path);
 		}
 
-
 		if(!function_exists('gd_info')){
 			throw new \Exception('Requires gd extension for php!');
 		}
 
-		switch ($ext) {
+
+		$mime=mime_content_type($path);
+		$mime=explode('/', $mime);
+		$mime=array_pop($mime);
+
+		switch ($mime) {
 		case 'jpeg':
 		case 'jpg':
 			$this->resource = imagecreatefromjpeg($path);
