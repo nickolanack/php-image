@@ -7,7 +7,7 @@ class Image {
 	private $maxFileSize=30*1024*1024;
 	private $resource;
 
-	public setMaxFileSize($bytes){
+	public function setMaxFileSize($bytes){
 		$this->maxFileSize=$bytes;
 		return $this;
 	}
