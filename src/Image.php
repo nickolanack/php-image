@@ -4,7 +4,30 @@ namespace nblackwe;
 
 class Image {
 
+	private $maxFileSize=30*1024*1024;
 	private $resource;
+
+	public setMaxFileSize($bytes){
+		$this->maxFileSize=$bytes;
+		return $this;
+	}
+
+	private function toSizeStr($num){
+		$u='B';
+		if($num>1024){
+			$num/=1024;
+			$u='KB';
+		}
+		if($num>1024){
+			$num/=1024;
+			$u='MB';
+		}
+		if($num>1024){
+			$num/=1024;
+			$u='GB';
+		}
+		return round($num,1).$u;
+	}
 
 	public function fromFile($path) {
 
@@ -20,10 +43,22 @@ class Image {
 			throw new \Exception('Requires gd extension for php!');
 		}
 
+		
 
 		$mime=mime_content_type($path);
 		$mime=explode('/', $mime);
 		$mime=array_pop($mime);
+
+
+		$sizeBytes=filesize($path)
+		if(($sizeBytes)>$this->maxFileSize){
+			throw new \Exception('File is too big: '.$path.' '.$this->toSizeStr($sizeBytes));
+		}
+	
+
+		//error_log($toSize(filesize($path)));
+		// error_log($toSize(memory_get_usage()));
+		// error_log(ini_get('memory_limit'));
 
 		switch ($mime) {
 		case 'jpeg':
