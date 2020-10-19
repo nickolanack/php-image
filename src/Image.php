@@ -50,8 +50,8 @@ class Image {
 		$mime=array_pop($mime);
 
 
-		$sizeBytes=filesize($path)
-		if(($sizeBytes)>$this->maxFileSize){
+		$sizeBytes=filesize($path);
+		if($sizeBytes>$this->maxFileSize){
 			throw new \Exception('File is too big: '.$path.' '.$this->toSizeStr($sizeBytes));
 		}
 	
